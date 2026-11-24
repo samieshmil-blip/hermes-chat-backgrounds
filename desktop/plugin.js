@@ -332,7 +332,11 @@ function guardContrast(el, prefs) {
 
     const bg = parseRgb(getComputedStyle(el).backgroundColor)
 
-    measured = { ratio: contrastRatio(bg, ink), thinned: factor < 1 }
+    measured = {
+      pct: Number((base * factor).toFixed(1)),
+      ratio: contrastRatio(bg, ink),
+      thinned: factor < 1
+    }
 
     if (measured.ratio === null || measured.ratio >= MIN_CONTRAST) {
       break
@@ -639,6 +643,7 @@ function SettingsSection() {
         title: t('strength')
       }),
       jsx(ToggleRow, {
+        below: jsx('div', { className: 'hcb-note', children: t('guardNote') }),
         checked: prefs.autoGuard,
         description: t('guardDesc'),
         label: t('guard'),
@@ -728,7 +733,9 @@ function SettingsSection() {
                 children:
                   ratio === null
                     ? t('contrastUnknown')
-                    : t(warn ? 'contrastWarn' : 'contrastOk', ratio.toFixed(1))
+                    : `${t(warn ? 'contrastWarn' : 'contrastOk', ratio.toFixed(1))}${
+                        contrast.thinned ? ` · ${t('thinned', contrast.pct)}` : ''
+                      }`
               })
             ]
           })
@@ -783,6 +790,8 @@ const EXTRA_LOCALES = {
     enableDesc: 'Jeder Chat bekommt seine eigene Farbe – Sitzungen sind sofort unterscheidbar.',
     guard: 'Text lesbar halten',
     guardDesc: 'Dünnt die Tönung automatisch aus, wenn der Textkontrast unter 4,5:1 fällt.',
+    guardNote: 'Greift bei Extremfarben – Weiß, Schwarz, blasse Töne. Normale Mitteltöne bestehen die Prüfung ohnehin.',
+    thinned: pct => `Füllung ${pct}%`,
     hex: 'Farbe als Hex',
     note: 'Text, Rahmen und Karten bleiben in der Theme-Palette – nur das Chatfeld wird getönt.',
     openSettings: 'Chat-Hintergründe: Einstellungen',
@@ -813,6 +822,8 @@ const EXTRA_LOCALES = {
     enableDesc: 'Cada chat se pinta con su propio color, así las sesiones no se confunden.',
     guard: 'Mantener el texto legible',
     guardDesc: 'Atenúa el relleno automáticamente cuando el contraste del texto bajaría de 4,5:1.',
+    guardNote: 'Actúa en colores extremos: blanco, negro y tonos pálidos. Los tonos medios ya pasan la prueba.',
+    thinned: pct => `relleno ${pct}%`,
     hex: 'Color en hex',
     note: 'El texto, los bordes y las tarjetas siguen la paleta del tema — solo se tiñe el campo del chat.',
     openSettings: 'Fondos de chat: ajustes',
@@ -843,6 +854,8 @@ const EXTRA_LOCALES = {
     enableDesc: 'Chaque discussion prend sa propre couleur : les sessions ne se confondent plus.',
     guard: 'Garder le texte lisible',
     guardDesc: 'Réduit automatiquement le voile dès que le contraste du texte passerait sous 4,5:1.',
+    guardNote: 'Agit sur les couleurs extrêmes — blanc, noir, teintes pâles. Les tons moyens passent déjà le test.',
+    thinned: pct => `voile ${pct}%`,
     hex: 'Couleur en hex',
     note: 'Le texte, les bordures et les cartes restent dans la palette du thème — seul le champ de la discussion est teinté.',
     openSettings: 'Fonds de discussion : réglages',
@@ -873,6 +886,8 @@ const EXTRA_LOCALES = {
     enableDesc: 'チャットごとに色を付けるので、セッションが混ざりません。',
     guard: '文字の読みやすさを保つ',
     guardDesc: 'テキストのコントラストが4.5:1を下回る場合、塗りを自動的に薄くします。',
+    guardNote: '白・黒・淡い色など極端な色でだけ働きます。中間色はそのまま基準を満たします。',
+    thinned: pct => `塗り ${pct}%`,
     hex: 'hexカラー',
     note: 'テキスト、枠線、カードはテーマのパレットのままです。着色されるのはチャットの領域だけです。',
     openSettings: 'チャット背景: 設定',
@@ -903,6 +918,8 @@ const EXTRA_LOCALES = {
     enableDesc: '每个聊天有自己的颜色，会话之间一眼就能分开。',
     guard: '保持文字可读',
     guardDesc: '当文字对比度会低于 4.5:1 时自动减淡填充。',
+    guardNote: '仅在极端颜色（白、黑、浅色）时生效；普通中间色本身就能通过检查。',
+    thinned: pct => `填充 ${pct}%`,
     hex: '十六进制颜色',
     note: '文字、边框和卡片保持主题配色——只给聊天区域着色。',
     openSettings: '聊天背景：设置',
@@ -933,6 +950,8 @@ const EXTRA_LOCALES = {
     enableDesc: '每個聊天有自己的顏色，工作階段之間一眼就能分開。',
     guard: '保持文字易讀',
     guardDesc: '當文字對比度會低於 4.5:1 時自動減淡填色。',
+    guardNote: '僅在極端顏色（白、黑、淺色）時生效；一般中間色本身就能通過檢查。',
+    thinned: pct => `填色 ${pct}%`,
     hex: '十六進位顏色',
     note: '文字、邊框與卡片維持主題配色——只為聊天區域著色。',
     openSettings: '聊天背景：設定',
@@ -963,6 +982,8 @@ const EXTRA_LOCALES = {
     enableDesc: 'كل محادثة تُلوَّن بلونها الخاص، فلا تختلط الجلسات.',
     guard: 'الحفاظ على وضوح النص',
     guardDesc: 'يخفف التعبئة تلقائيًا عندما تنخفض نسبة تباين النص عن 4.5:1.',
+    guardNote: 'يعمل على الألوان المتطرفة — الأبيض والأسود والدرجات الباهتة. أما الدرجات المتوسطة فتنجح تلقائيًا.',
+    thinned: pct => `التعبئة ${pct}%`,
     hex: 'اللون بصيغة hex',
     note: 'يبقى النص والحدود والبطاقات بألوان السمة — يُلوّن حقل المحادثة فقط.',
     openSettings: 'خلفيات المحادثة: الإعدادات',
@@ -1003,6 +1024,9 @@ export default {
         enableDesc: 'Each chat is painted with its own colour, so sessions never blur together.',
         guard: 'Keep text readable',
         guardDesc: 'Thins the fill automatically when the text contrast would drop below 4.5:1.',
+        guardNote:
+          'Acts on extreme colours — white, black, pale tints. Ordinary mid tones already pass, so nothing changes for them.',
+        thinned: pct => `fill ${pct}%`,
         hex: 'Hex colour',
         note: 'Text, borders and cards stay on the theme palette — only the chat field is tinted.',
         openSettings: 'Chat backgrounds: settings',
@@ -1033,6 +1057,9 @@ export default {
         enableDesc: 'Каждый чат красится своим цветом — сессии не сливаются между собой.',
         guard: 'Сохранять читаемость текста',
         guardDesc: 'Автоматически ослабляет заливку, если контраст текста падает ниже 4.5:1.',
+        guardNote:
+          'Срабатывает на крайних цветах — белый, чёрный, бледные тона. Обычные средние тона проходят проверку сами.',
+        thinned: pct => `заливка ${pct}%`,
         hex: 'Цвет в hex',
         note: 'Текст, границы и карточки остаются в палитре темы — тонируется только поле чата.',
         openSettings: 'Фон чатов: настройки',
@@ -1089,20 +1116,30 @@ export default {
     // same-document write, and wrapping `Storage.prototype.setItem` would be a
     // prototype patch a reviewer (rightly) refuses.
     //
-    // ORDER MATTERS: the app's own session menu writes the colour inside its
-    // click handler, so a listener in the CAPTURE phase (pointerup) reads the map
-    // one selection too early — the next colour paints the previous one. These
-    // listen in the BUBBLE phase, i.e. after the menu has written, and repeat once
-    // shortly later for menus that persist on an animation frame.
+    // NEITHER the event phase NOR the event type can be trusted for this: a
+    // Radix-style menu item may write on `pointerdown` and cancel the follow-up
+    // `click` (preventDefault on pointerdown suppresses it), while a listener in
+    // the capture phase runs BEFORE the app writes. Both failure modes are real
+    // and were seen: reading in capture painted one colour behind; listening to
+    // `click` alone painted nothing until the next unrelated click.
+    //
+    // So the trigger only says "something happened" — the READ itself is deferred
+    // to a later task, by which time any handler from this interaction, in any
+    // phase, has already persisted. The raw-string compare makes extra passes free.
     refreshColors()
 
     const refreshSoon = () => {
+      // A later task, not a later phase: whatever the menu did — pointerdown
+      // write, cancelled click, deferred persist — is done by the time these run.
       ctx.setTimeout(refreshColors, 0)
-      ctx.setTimeout(refreshColors, 120)
+      ctx.setTimeout(refreshColors, 150)
+      ctx.setTimeout(refreshColors, 400)
     }
 
-    ctx.onDispose(ctx.addEventListener(document, 'click', refreshSoon))
-    ctx.onDispose(ctx.addEventListener(document, 'keyup', refreshSoon))
+    for (const type of ['pointerdown', 'pointerup', 'click', 'keyup']) {
+      ctx.onDispose(ctx.addEventListener(document, type, refreshSoon, { capture: true, passive: true }))
+    }
+
     ctx.onDispose(ctx.addEventListener(window, 'focus', refreshColors))
     ctx.onDispose(ctx.addEventListener(document, 'visibilitychange', refreshColors))
 

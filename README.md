@@ -15,7 +15,10 @@ guard keeps the text readable at any colour — white and black included.
   surface core marks as focused — pure CSS, no listener of yours.
 - **Any colour.** The app's swatch grid, the system colour picker, or a typed hex.
   Everything goes through `host.sessions.setColor`, the same value the sidebar's colour
-  menu writes, so the dot and the background can never disagree.
+  menu writes, so a colour picked in either place is one value.
+- **Colour changes land at once.** The app's own session menu may write on `pointerdown`
+  and cancel the follow-up click, so the plugin defers the read to the next task instead of
+  trusting an event phase: a pick repaints immediately, whichever menu wrote it.
 - **Readable by construction.** For every painted surface the plugin measures the real
   contrast (resolved background against the theme ink) and thins the fill until the text
   passes WCAG AA (4.5:1). The measured number is shown under the picker.
@@ -67,8 +70,8 @@ The plugin writes one CSS variable per surface and the stylesheet turns it into 
 ```
 
 No timers, no polling, no animation frames and no observers on the document tree: the
-plugin repaints on app-owned signals (session focus, resize, visibility change, colour
-change) and reads the colour map only when its raw value changed.
+plugin repaints on app-owned signals (session focus, resize, visibility change, a
+pointer/key interaction) and re-reads the colour map only when its raw value changed.
 
 ## Privacy
 
@@ -93,6 +96,12 @@ change) and reads the colour map only when its raw value changed.
   material still shows through, but this mode is the least tested one.
 - **Late-mounting tiles.** A split tile that appears a frame after the focus change is
   painted by the deferred pass; it is never missed, but it is not observed as it mounts.
+- **The dot beside a tab title is not the chat colour.** That circle is core's status
+  indicator (working / unread / draft / idle), so it keeps its own vocabulary; the tint and
+  the rail are the plugin's colour. When a chat is idle and has its own colour, the two
+  match by construction.
+- **The rule under the chat header keeps the theme colour.** The plugin colours the field
+  and the rail, not core's hairline.
 
 ## Development
 
