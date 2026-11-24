@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Chat Backgrounds — locales</title>
+<style>
+  :root{--bg:#0f1116;--card:#171a21;--stroke:#252b36;--ink:#e7eaf0;--dim:#98a1b0;--faint:#5d6675;--accent:#f2c14e}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);font:13px/1.45 "Segoe UI",system-ui,sans-serif;color:var(--ink);
+       padding:22px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;height:100vh}
+  .card{background:var(--card);border:1px solid var(--stroke);border-radius:10px;padding:14px;overflow:hidden}
+  .lang{display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--faint);margin-bottom:10px}
+  .chip{background:#1d222c;border:1px solid var(--stroke);border-radius:999px;padding:1px 8px;color:var(--dim)}
+  h3{margin:0 0 10px;font-size:13.5px}
+  .row{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-top:1px solid var(--stroke);font-size:12px}
+  .row span:first-child{color:var(--ink)}
+  .knob{width:30px;height:16px;border-radius:999px;background:var(--accent);position:relative;flex:0 0 auto}
+  .knob::after{content:"";position:absolute;right:2px;top:2px;width:12px;height:12px;border-radius:50%;background:#16181d}
+  .seg{display:inline-flex;background:#1d222c;border-radius:5px;padding:2px;gap:2px;font-size:11px}
+  .seg i{padding:2px 7px;border-radius:4px;font-style:normal;color:var(--dim)}
+  .seg i.on{background:#2a3140;color:var(--ink)}
+  .grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin:8px 0}
+  .sw{width:20px;height:20px;border-radius:50%}
+  .hex{display:flex;gap:7px;align-items:center;margin-top:6px}
+  .chip2{width:24px;height:20px;border-radius:4px;background:#944bdd;border:1px solid var(--stroke)}
+  .code{flex:1;background:#12151c;border:1px solid var(--stroke);border-radius:4px;padding:3px 6px;font:11px ui-monospace,monospace;color:#c9d2e0}
+  .ok{font-size:10.5px;color:#8ed6a5;margin-top:7px}
+  .foot{position:fixed;left:0;right:0;bottom:6px;text-align:center;font-size:10.5px;color:#5d6675}
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="lang"><span>Русский</span><span class="chip">ru</span></div>
+    <h3>Фон чатов</h3>
+    <div class="row"><span>Тонировать фон чатов</span><span class="knob"></span></div>
+    <div class="row"><span>Интенсивность</span><span class="seg"><i>Мягко</i><i class="on">Средне</i><i>Заметно</i></span></div>
+    <div class="row"><span>Сохранять читаемость текста</span><span class="knob"></span></div>
+    <div class="row"><span>Полоса у активного чата</span><span class="knob"></span></div>
+    <div class="row"><span>Кнопка цвета в шапке окна</span><span class="knob"></span></div>
+    <div class="grid">
+      <span class="sw" style="background:hsl(0 72% 62%)"></span><span class="sw" style="background:hsl(30 72% 62%)"></span>
+      <span class="sw" style="background:hsl(60 72% 62%)"></span><span class="sw" style="background:hsl(90 72% 62%)"></span>
+      <span class="sw" style="background:hsl(120 72% 62%)"></span><span class="sw" style="background:hsl(150 72% 62%)"></span>
+      <span class="sw" style="background:hsl(180 72% 62%)"></span><span class="sw" style="background:hsl(210 72% 62%)"></span>
+      <span class="sw" style="background:hsl(240 72% 62%)"></span><span class="sw" style="background:hsl(270 72% 62%);box-shadow:0 0 0 2px #171a21,0 0 0 3.5px #944bdd"></span>
+      <span class="sw" style="background:hsl(300 72% 62%)"></span><span class="sw" style="background:hsl(330 72% 62%)"></span>
+    </div>
+    <div class="hex"><span class="chip2"></span><span class="code">#944bdd</span></div>
+    <div class="ok">Контраст текста 9.1:1 — читается свободно.</div>
+  </div>
+
+  <div class="card">
+    <div class="lang"><span>English</span><span class="chip">en</span></div>
+    <h3>Chat backgrounds</h3>
+    <div class="row"><span>Tint chat backgrounds</span><span class="knob"></span></div>
+    <div class="row"><span>Intensity</span><span class="seg"><i>Soft</i><i class="on">Medium</i><i>Strong</i></span></div>
+    <div class="row"><span>Keep text readable</span><span class="knob"></span></div>
+    <div class="row"><span>Rail on the active chat</span><span class="knob"></span></div>
+    <div class="row"><span>Colour button in the window header</span><span class="knob"></span></div>
+    <div class="grid">
+      <span class="sw" style="background:hsl(0 72% 62%)"></span><span class="sw" style="background:hsl(30 72% 62%)"></span>
+      <span class="sw" style="background:hsl(60 72% 62%)"></span><span class="sw" style="background:hsl(90 72% 62%)"></span>
+      <span class="sw" style="background:hsl(120 72% 62%)"></span><span class="sw" style="background:hsl(150 72% 62%)"></span>
+      <span class="sw" style="background:hsl(180 72% 62%)"></span><span class="sw" style="background:hsl(210 72% 62%)"></span>
+      <span class="sw" style="background:hsl(240 72% 62%)"></span><span class="sw" style="background:hsl(270 72% 62%);box-shadow:0 0 0 2px #171a21,0 0 0 3.5px #944bdd"></span>
+      <span class="sw" style="background:hsl(300 72% 62%)"></span><span class="sw" style="background:hsl(330 72% 62%)"></span>
+    </div>
+    <div class="hex"><span class="chip2"></span><span class="code">#944bdd</span></div>
+    <div class="ok">Text contrast 9.1:1 — comfortable.</div>
+  </div>
+
+  <div class="card">
+    <div class="lang"><span>日本語</span><span class="chip">ja</span></div>
+    <h3>チャット背景</h3>
+    <div class="row"><span>チャット背景を着色</span><span class="knob"></span></div>
+    <div class="row"><span>強さ</span><span class="seg"><i>弱め</i><i class="on">中</i><i>強め</i></span></div>
+    <div class="row"><span>文字の読みやすさを保つ</span><span class="knob"></span></div>
+    <div class="row"><span>アクティブなチャットのライン</span><span class="knob"></span></div>
+    <div class="row"><span>ヘッダーの色ボタン</span><span class="knob"></span></div>
+    <div class="grid">
+      <span class="sw" style="background:hsl(0 72% 62%)"></span><span class="sw" style="background:hsl(30 72% 62%)"></span>
+      <span class="sw" style="background:hsl(60 72% 62%)"></span><span class="sw" style="background:hsl(90 72% 62%)"></span>
+      <span class="sw" style="background:hsl(120 72% 62%)"></span><span class="sw" style="background:hsl(150 72% 62%)"></span>
+      <span class="sw" style="background:hsl(180 72% 62%)"></span><span class="sw" style="background:hsl(210 72% 62%)"></span>
+      <span class="sw" style="background:hsl(240 72% 62%)"></span><span class="sw" style="background:hsl(270 72% 62%);box-shadow:0 0 0 2px #171a21,0 0 0 3.5px #944bdd"></span>
+      <span class="sw" style="background:hsl(300 72% 62%)"></span><span class="sw" style="background:hsl(330 72% 62%)"></span>
+    </div>
+    <div class="hex"><span class="chip2"></span><span class="code">#944bdd</span></div>
+    <div class="ok">テキストのコントラスト 9.1:1 — 読みやすい状態です。</div>
+  </div>
+
+  <div class="foot">Also shipped in de, es, fr, zh, zh-Hant and ar — mock, not a screenshot.</div>
+</body>
+</html>

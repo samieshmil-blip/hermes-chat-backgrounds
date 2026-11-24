@@ -1,0 +1,14 @@
+name: chat-backgrounds
+version: 1.0.0
+manifest_version: 2
+api_version: 1
+license: MIT
+author: samieshmil-blip
+homepage: https://github.com/samieshmil-blip/hermes-chat-backgrounds
+description: >-
+  Per-chat background tint for the Hermes desktop: every chat wears its own
+  session colour, the chat you are working in gets a matching rail, and a
+  measured contrast guard keeps the text readable at any colour — white and
+  black included.
+tags: [desktop, appearance, colours, sessions, accessibility]
+requires_hermes: ">=0.23.0"
