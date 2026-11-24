@@ -1130,18 +1130,30 @@ export default {
 
     const refreshSoon = () => {
       // A later task, not a later phase: whatever the menu did — pointerdown
-      // write, cancelled click, deferred persist — is done by the time these run.
-      ctx.setTimeout(refreshColors, 0)
-      ctx.setTimeout(refreshColors, 150)
-      ctx.setTimeout(refreshColors, 400)
+      // write, cancelled click, deferred persist — is done by then. The SECOND
+      // half matters just as much: `applyAll` repaints surfaces that appeared
+      // while no chat was mounted (the Settings overlay replaces the chat, so a
+      // colour picked there has nothing to paint until the overlay closes).
+      const pass = () => {
+        refreshColors()
+        applyAll()
+      }
+
+      ctx.setTimeout(pass, 0)
+      ctx.setTimeout(pass, 150)
+      ctx.setTimeout(pass, 400)
     }
 
     for (const type of ['pointerdown', 'pointerup', 'click', 'keyup']) {
       ctx.onDispose(ctx.addEventListener(document, type, refreshSoon, { capture: true, passive: true }))
     }
 
-    ctx.onDispose(ctx.addEventListener(window, 'focus', refreshColors))
-    ctx.onDispose(ctx.addEventListener(document, 'visibilitychange', refreshColors))
+    // Leaving the Settings overlay is a route change, i.e. exactly when a chat
+    // surface mounts again.
+    ctx.onDispose(ctx.addEventListener(window, 'hashchange', refreshSoon))
+
+    ctx.onDispose(ctx.addEventListener(window, 'focus', refreshSoon))
+    ctx.onDispose(ctx.addEventListener(document, 'visibilitychange', refreshSoon))
 
     // ── styles ────────────────────────────────────────────────────────────
     const style = document.createElement('style')

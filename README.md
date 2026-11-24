@@ -71,7 +71,8 @@ The plugin writes one CSS variable per surface and the stylesheet turns it into 
 
 No timers, no polling, no animation frames and no observers on the document tree: the
 plugin repaints on app-owned signals (session focus, resize, visibility change, a
-pointer/key interaction) and re-reads the colour map only when its raw value changed.
+pointer/key interaction, a route change such as leaving Settings) and re-reads the colour
+map only when its raw value changed.
 
 ## Privacy
 
