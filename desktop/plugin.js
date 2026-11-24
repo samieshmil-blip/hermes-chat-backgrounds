@@ -108,6 +108,31 @@ function parseColors(raw) {
   }
 }
 
+/** Raw value behind `$colors`, so a re-read can bail out when nothing changed.
+ *  Refreshes run on clicks, focus and visibility changes — a raw compare keeps
+ *  them free. */
+let rawColors = null
+
+/** Re-read core's colour map. True when the map actually changed. */
+function refreshColors() {
+  let raw = null
+
+  try {
+    raw = window.localStorage.getItem(COLORS_KEY)
+  } catch {
+    raw = null
+  }
+
+  if (raw === rawColors) {
+    return false
+  }
+
+  rawColors = raw
+  $colors.set(parseColors(raw))
+
+  return true
+}
+
 /** The colour one surface should wear. An explicit session colour always wins;
  *  `auto` only fills in the chats that have none, from the same deterministic
  *  identity colour the profile rail uses. */
@@ -554,6 +579,9 @@ function SettingsSection() {
       writeTimer.current = null
       haptic('tap')
       host.sessions.setColor(focusedId, color)
+      // Our own write lands in core's store synchronously; re-read so the
+      // surface and the sidebar dot move together instead of one step apart.
+      refreshColors()
     }, 140)
   }
 
@@ -1059,32 +1087,22 @@ export default {
     // ── the colour map core keeps ─────────────────────────────────────────
     // Read-only: the value core itself persists. No `storage` event fires for a
     // same-document write, and wrapping `Storage.prototype.setItem` would be a
-    // prototype patch a reviewer (rightly) refuses — so the map is re-read on
-    // the cheap edges instead: pointer-up (after any colour menu click), window
-    // focus, visibility change, and every apply pass. A raw-string compare makes
-    // a re-read free when nothing changed.
-    let rawColors = null
-
-    const refreshColors = () => {
-      let raw = null
-
-      try {
-        raw = window.localStorage.getItem(COLORS_KEY)
-      } catch {
-        raw = null
-      }
-
-      if (raw === rawColors) {
-        return
-      }
-
-      rawColors = raw
-      $colors.set(parseColors(raw))
-    }
-
+    // prototype patch a reviewer (rightly) refuses.
+    //
+    // ORDER MATTERS: the app's own session menu writes the colour inside its
+    // click handler, so a listener in the CAPTURE phase (pointerup) reads the map
+    // one selection too early — the next colour paints the previous one. These
+    // listen in the BUBBLE phase, i.e. after the menu has written, and repeat once
+    // shortly later for menus that persist on an animation frame.
     refreshColors()
 
-    ctx.onDispose(ctx.addEventListener(document, 'pointerup', refreshColors, { capture: true, passive: true }))
+    const refreshSoon = () => {
+      ctx.setTimeout(refreshColors, 0)
+      ctx.setTimeout(refreshColors, 120)
+    }
+
+    ctx.onDispose(ctx.addEventListener(document, 'click', refreshSoon))
+    ctx.onDispose(ctx.addEventListener(document, 'keyup', refreshSoon))
     ctx.onDispose(ctx.addEventListener(window, 'focus', refreshColors))
     ctx.onDispose(ctx.addEventListener(document, 'visibilitychange', refreshColors))
 
