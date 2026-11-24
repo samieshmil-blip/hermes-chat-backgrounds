@@ -4,7 +4,13 @@ Every chat wears **its own colour**, so two sessions side by side never look the
 The chat you are working in gets a thin rail in that colour, and a measured contrast
 guard keeps the text readable at any colour — white and black included.
 
-![Chat Backgrounds](docs/hero.png)
+**Dark theme**
+
+![Chat Backgrounds — dark theme](docs/hero.png)
+
+**Light theme**
+
+![Chat Backgrounds — light theme](docs/hero-light.png)
 
 ## What it does
 
@@ -43,6 +49,14 @@ Then run **⌘K → Reload desktop plugins** (or restart the app).
 
 Settings live in **Settings ▸ Plugins ▸ Chat backgrounds**, and the palette icon in the
 window header goes straight there.
+
+## Colour variants
+
+![Six chats, six colours, in both themes](docs/variants.png)
+
+The wash is the session colour mixed into the theme's own background, so a light and a dark
+theme both work — and the contrast guard measures the result in whichever theme is active,
+rather than assuming a palette.
 
 ## Languages
 

@@ -49,7 +49,7 @@
   .grid{display:grid;grid-template-columns:repeat(6,1fr);gap:9px;margin:10px 0 6px}
   .sw{width:22px;height:22px;border-radius:50%}
   .hex{display:flex;align-items:center;gap:8px;margin-top:8px}
-  .chip{width:26px;height:22px;border-radius:5px;background:#944bdd;border:1px solid var(--stroke)}
+  .chip{width:26px;height:22px;border-radius:5px;background:#7b9dff;border:1px solid var(--stroke)}
   .code{flex:1;background:#12151c;border:1px solid var(--stroke);border-radius:5px;padding:4px 7px;font:11px ui-monospace,monospace;color:#c9d2e0}
   .contrast{font-size:11px;color:#8ed6a5;margin-top:8px}
 </style>
@@ -69,7 +69,7 @@
         <div class="tab on">Design review</div>
         <div class="tab">Release notes</div>
         <div class="icon">
-          <div class="ib">⚙</div><div class="ib">▦</div><div class="ib">◱</div><div class="ib">⇄</div><div class="ib hot">◑</div>
+          <div class="ib">⚙</div><div class="ib">▦</div><div class="ib">◱</div><div class="ib">⇄</div><div class="ib" style="color:#f2c14e;border-color:#3f3a22;background:#221f14"><svg viewBox="0 0 16 16" width="13" height="13"><path fill="currentColor" d="M8 1a7 7 0 0 0 0 14c.9 0 1.5-.6 1.5-1.4 0-.4-.15-.75-.4-1-.2-.25-.35-.5-.35-.85 0-.7.55-1.25 1.25-1.25H11a4 4 0 0 0 4-4C15 3.6 11.9 1 8 1Zm-3.6 3a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2Zm2.7-1.5a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2Zm3.3.6a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2Z"/></svg></div>
         </div>
       </div>
       <div class="split">
@@ -78,6 +78,8 @@
           <div class="msg">Each chat keeps its own colour, so two sessions side by side never look the same.</div>
           <p class="who">You</p>
           <div class="msg me">Give the active one a rail in the same colour.</div>
+          <p class="who">Hermes</p>
+          <div class="msg">Done — the rail follows focus, and the unfocused chat keeps its tint without one.</div>
           <div class="composer">Message…</div>
         </section>
         <section class="pane b">
@@ -85,6 +87,8 @@
           <div class="msg">The unfocused chat keeps its tint but loses the rail — focus reads instantly.</div>
           <p class="who">You</p>
           <div class="msg me">And the text stays on the theme ink.</div>
+          <p class="who">Hermes</p>
+          <div class="msg">White and black work too: the fill thins until the text passes 4.5:1.</div>
           <div class="composer">Message…</div>
         </section>
       </div>
@@ -99,11 +103,11 @@
           <span class="sw" style="background:hsl(60 72% 62%)"></span><span class="sw" style="background:hsl(90 72% 62%)"></span>
           <span class="sw" style="background:hsl(120 72% 62%)"></span><span class="sw" style="background:hsl(150 72% 62%)"></span>
           <span class="sw" style="background:hsl(180 72% 62%)"></span><span class="sw" style="background:hsl(210 72% 62%)"></span>
-          <span class="sw" style="background:hsl(240 72% 62%)"></span><span class="sw" style="background:hsl(270 72% 62%);box-shadow:0 0 0 2px #16181d,0 0 0 3.5px #944bdd"></span>
+          <span class="sw" style="background:hsl(240 72% 62%);box-shadow:0 0 0 2px #16181d,0 0 0 3.5px #7b9dff"></span><span class="sw" style="background:hsl(270 72% 62%)"></span>
           <span class="sw" style="background:hsl(300 72% 62%)"></span><span class="sw" style="background:hsl(330 72% 62%)"></span>
         </div>
-        <div class="hex"><span class="chip"></span><span class="code">#944bdd</span></div>
-        <div class="contrast">Text contrast 9.1:1 — comfortable.</div>
+        <div class="hex"><span class="chip"></span><span class="code">#7b9dff</span></div>
+        <div class="contrast">Text contrast 9.4:1 — comfortable.</div>
       </div>
       <div class="cap">Mock, not a screenshot: no real session names, models or balances.</div>
     </main>

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Chat Backgrounds — colour variants</title>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#0b0d11;font:13px/1.4 "Segoe UI",system-ui,sans-serif;color:#e6e9ef;padding:18px}
+  .row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px}
+  .label{display:flex;align-items:center;justify-content:space-between;font-size:10.5px;letter-spacing:.06em;
+         text-transform:uppercase;color:#6b7484;margin:0 0 8px}
+  .pane{position:relative;height:250px;border-radius:9px;border:1px solid var(--stroke);overflow:hidden;
+        padding:12px 13px;background:color-mix(in srgb,var(--c) var(--w),var(--bg))}
+  .pane::after{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--c)}
+  .pane.fresh::after{opacity:.35}
+  .pane .dot{position:absolute;right:11px;top:11px;width:8px;height:8px;border-radius:50%;background:var(--c)}
+  .top{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--dim);margin-bottom:10px}
+  .top b{color:var(--ink);font-weight:600;font-size:12px}
+  .msg{padding:7px 9px;border-radius:8px;font-size:11.5px;line-height:1.4;margin-bottom:8px;max-width:92%}
+  .msg.a{background:var(--bubble);border:1px solid var(--stroke2);color:var(--ink)}
+  .msg.b{margin-left:auto;background:var(--bubble2);border:1px solid var(--stroke2);color:var(--ink)}
+  .composer{margin-top:auto;border-radius:7px;border:1px solid var(--stroke2);padding:6px 9px;font-size:11px;color:var(--dim);background:var(--field)}
+  .hexline{position:absolute;left:12px;bottom:9px;font:10.5px ui-monospace,monospace;color:var(--dim)}
+
+  .dark{--bg:#12141a;--stroke:#242a35;--stroke2:#252b36;--ink:#e6e9ef;--dim:#9aa3b2;--bubble:#1c2029;--bubble2:#232936;--field:#171b23;--w:12%}
+  .light{--bg:#f7f8fb;--stroke:#e0e5ee;--stroke2:#e4e8f0;--ink:#1b2029;--dim:#5c6575;--bubble:#ffffff;--bubble2:#eef2fa;--field:#ffffff;--w:10%}
+
+  .sub{font-size:11px;color:#6b7484;margin:2px 0 10px}
+</style>
+</head>
+<body>
+  <p class="sub">Same plugin, six chats — the wash follows each session colour and the rail marks the one in focus.</p>
+
+  <div class="label"><span>Dark theme</span><span>rail on, guard on</span></div>
+  <div class="row dark">
+    <div class="pane" style="--c:#7b9dff"><span class="dot"></span>
+      <div class="top"><b>Design review</b> now</div>
+      <div class="msg a">Each chat keeps its own colour…</div>
+      <div class="msg b">…so two sessions never look the same.</div>
+      <div class="hexline">#7b9dff</div>
+    </div>
+    <div class="pane" style="--c:#5fd39a"><span class="dot"></span>
+      <div class="top"><b>Release notes</b> 2m</div>
+      <div class="msg a">The rail only appears on the chat you work in.</div>
+      <div class="msg b">And the ink stays on the theme.</div>
+      <div class="hexline">#5fd39a</div>
+    </div>
+    <div class="pane" style="--c:#f2c14e"><span class="dot"></span>
+      <div class="top"><b>Support queue</b> 1h</div>
+      <div class="msg a">White and black are fine too — the guard thins them.</div>
+      <div class="msg b">Measured, not guessed.</div>
+      <div class="hexline">#f2c14e</div>
+    </div>
+  </div>
+
+  <div class="label"><span>Light theme</span><span>same colours, lighter wash</span></div>
+  <div class="row light">
+    <div class="pane" style="--c:#3b6fe0"><span class="dot"></span>
+      <div class="top"><b>Design review</b> now</div>
+      <div class="msg a">Each chat keeps its own colour…</div>
+      <div class="msg b">…so two sessions never look the same.</div>
+      <div class="hexline">#3b6fe0</div>
+    </div>
+    <div class="pane" style="--c:#2f9e6b"><span class="dot"></span>
+      <div class="top"><b>Release notes</b> 2m</div>
+      <div class="msg a">The rail only appears on the chat you work in.</div>
+      <div class="msg b">And the ink stays on the theme.</div>
+      <div class="hexline">#2f9e6b</div>
+    </div>
+    <div class="pane" style="--c:#c8891a"><span class="dot"></span>
+      <div class="top"><b>Support queue</b> 1h</div>
+      <div class="msg a">White and black are fine too — the guard thins them.</div>
+      <div class="msg b">Measured, not guessed.</div>
+      <div class="hexline">#c8891a</div>
+    </div>
+  </div>
+
+  <p class="sub" style="margin-top:12px">Mock, not a screenshot: no real session names, models or balances.</p>
+</body>
+</html>
