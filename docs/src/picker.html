@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Colour from the system picker</title>
+<style>
+  :root{--bg:#12141a;--stroke:#242a35;--ink:#e6e9ef;--dim:#9aa3b2;--faint:#5f6878;--accent:#f2c14e}
+  *{box-sizing:border-box}
+  body{margin:0;background:#0a0c10;font:13px/1.45 "Segoe UI",system-ui,sans-serif;color:var(--ink);
+       height:100vh;display:flex;align-items:center;justify-content:center}
+  .win{width:1060px;height:620px;background:var(--bg);border:1px solid var(--stroke);border-radius:12px;overflow:hidden;position:relative;
+       box-shadow:0 30px 80px rgba(0,0,0,.55);padding:22px 26px}
+  .crumb{font-size:11.5px;color:var(--faint);margin-bottom:14px}
+  h3{margin:0 0 4px;font-size:13.5px}
+  .desc{font-size:11.5px;color:var(--dim);margin:0 0 14px}
+  .row{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:9px 0;border-top:1px solid var(--stroke);font-size:12.5px}
+  .row .r{display:flex;flex-direction:column;gap:2px}
+  .row small{color:var(--faint);font-size:11px}
+  .knob{width:34px;height:18px;border-radius:999px;background:var(--accent);position:relative;flex:0 0 auto}
+  .knob::after{content:"";position:absolute;right:2px;top:2px;width:14px;height:14px;border-radius:50%;background:#16181d}
+  .colorblock{margin-top:12px;max-width:300px}
+  .grid{display:grid;grid-template-columns:repeat(6,1fr);gap:9px}
+  .sw{width:22px;height:22px;border-radius:50%}
+  .clear{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:10px;padding:5px 0;border-radius:6px;
+         font-size:11.5px;color:#8d97a6;border:1px solid #262c38}
+  .hexrow{display:flex;align-items:center;gap:8px;margin-top:12px}
+  .chip{width:30px;height:24px;border-radius:5px;background:#4b4bdd;border:1px solid var(--stroke)}
+  .code{flex:1;background:#12151c;border:1px solid var(--stroke);border-radius:5px;padding:5px 8px;font:11px ui-monospace,monospace;color:#c9d2e0}
+  .contrast{font-size:11px;color:#8ed6a5;margin-top:9px}
+  .note{font-size:11px;color:var(--faint);margin-top:16px}
+
+  /* Windows-style colour dialog */
+  .dlg{position:absolute;left:250px;top:196px;width:300px;background:#f3f3f3;border:1px solid #b9b9b9;border-radius:8px;
+       box-shadow:0 26px 60px rgba(0,0,0,.55);font-family:"Segoe UI",sans-serif;color:#1b1b1b}
+  .dlg .bar{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;font-size:12px;border-bottom:1px solid #dcdcdc}
+  .dlg .x{color:#5a5a5a}
+  .sv{position:relative;height:172px;margin:12px 12px 0;border-radius:3px;
+      background:linear-gradient(to top,#000,rgba(0,0,0,0)),linear-gradient(to right,#fff,rgba(255,255,255,0)),#4b4bdd}
+  .sv::after{content:"";position:absolute;left:196px;top:44px;width:12px;height:12px;border:2px solid #fff;border-radius:50%;
+             box-shadow:0 0 0 1px rgba(0,0,0,.35)}
+  .hue{position:relative;height:14px;margin:10px 12px 0;border-radius:2px;
+       background:linear-gradient(to right,#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00)}
+  .hue::after{content:"";position:absolute;left:186px;top:-2px;width:8px;height:18px;border:2px solid #fff;border-radius:3px;
+              box-shadow:0 0 0 1px rgba(0,0,0,.35)}
+  .rgb{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 12px 8px}
+  .rgb label{display:block;font-size:10.5px;color:#444;margin-bottom:3px}
+  .rgb input{width:100%;padding:4px 6px;font:12px "Segoe UI",sans-serif;border:1px solid #b9b9b9;border-radius:4px;background:#fff}
+  .dlgfoot{display:flex;justify-content:flex-end;gap:8px;padding:10px 12px}
+  .btn{padding:5px 14px;font:12px "Segoe UI",sans-serif;border:1px solid #b9b9b9;border-radius:4px;background:#fdfdfd}
+  .btn.primary{border-color:#0b62c4;background:#0b62c4;color:#fff}
+  .cap{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);font-size:11px;color:#6f7889}
+</style>
+</head>
+<body>
+  <div class="win">
+    <div class="crumb">Settings › Plugins › Chat backgrounds</div>
+    <h3>Chat backgrounds</h3>
+    <p class="desc">Every chat wears its own colour; this page is where you pick it.</p>
+
+    <div class="row"><div class="r"><span>Tint chat backgrounds</span><small>Each chat is painted with its own colour.</small></div><span class="knob"></span></div>
+    <div class="row"><div class="r"><span>Keep text readable</span><small>Thins the fill when contrast would drop below 4.5:1.</small></div><span class="knob"></span></div>
+    <div class="row"><div class="r"><span>Rail on the active chat</span><small>A thin bar in the chat colour at its left edge.</small></div><span class="knob"></span></div>
+
+    <div class="colorblock">
+      <div class="grid">
+        <span class="sw" style="background:hsl(0 72% 62%)"></span><span class="sw" style="background:hsl(30 72% 62%)"></span>
+        <span class="sw" style="background:hsl(60 72% 62%)"></span><span class="sw" style="background:hsl(90 72% 62%)"></span>
+        <span class="sw" style="background:hsl(120 72% 62%)"></span><span class="sw" style="background:hsl(150 72% 62%)"></span>
+        <span class="sw" style="background:hsl(180 72% 62%)"></span><span class="sw" style="background:hsl(210 72% 62%)"></span>
+        <span class="sw" style="background:hsl(240 72% 62%);box-shadow:0 0 0 2px #12141a,0 0 0 3.5px #4b4bdd"></span>
+        <span class="sw" style="background:hsl(270 72% 62%)"></span>
+        <span class="sw" style="background:hsl(300 72% 62%)"></span><span class="sw" style="background:hsl(330 72% 62%)"></span>
+      </div>
+      <div class="hexrow"><span class="chip"></span><span class="code">#4b4bdd</span></div>
+      <div class="contrast">Text contrast 15.4:1 — comfortable.</div>
+    </div>
+
+    <div class="note">Text, borders and cards stay on the theme palette — only the chat field is tinted.</div>
+
+    <!-- the OS colour dialog, opened from the swatch to the left of the hex field -->
+    <div class="dlg">
+      <div class="bar"><span>Colour</span><span class="x">✕</span></div>
+      <div class="sv"></div>
+      <div class="hue"></div>
+      <div class="rgb">
+        <div><label>R</label><input value="75" readonly></div>
+        <div><label>G</label><input value="75" readonly></div>
+        <div><label>B</label><input value="221" readonly></div>
+      </div>
+      <div class="dlgfoot"><span class="btn">Cancel</span><span class="btn primary">OK</span></div>
+    </div>
+
+    <div class="cap">Mock, not a screenshot — the system picker, any colour including white and black</div>
+  </div>
+</body>
+</html>

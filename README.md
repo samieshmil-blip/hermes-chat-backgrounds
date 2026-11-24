@@ -45,10 +45,29 @@ cp -r hermes-chat-backgrounds/desktop "$HERMES_HOME/desktop-plugins/chat-backgro
 ```
 
 On Windows that is `%LOCALAPPDATA%\hermes\desktop-plugins\chat-backgrounds\plugin.js`.
-Then run **⌘K → Reload desktop plugins** (or restart the app).
+Then run **Ctrl+K** on Windows/Linux or **⌘K** on macOS → *Reload desktop plugins*
+(or just restart the app).
 
 Settings live in **Settings ▸ Plugins ▸ Chat backgrounds**, and the palette icon in the
 window header goes straight there.
+
+## Where you pick a colour
+
+Three places, one value — the plugin writes the same colour the session's dot uses, so the
+field, the rail and the dot never disagree.
+
+**From the session row** — right-click a chat in the sidebar → *Appearance* → a swatch.
+
+![Colour from the session row](docs/menu-session.png)
+
+**From the tab** — the same *Appearance* row lives in a tab's own right-click menu.
+
+![Colour from the tab](docs/menu-tab.png)
+
+**From this page** — the swatch grid, the system colour picker, or a typed hex. The picker
+covers white, black and everything in between; the guard keeps the text readable there.
+
+![The system colour picker](docs/picker.png)
 
 ## Colour variants
 

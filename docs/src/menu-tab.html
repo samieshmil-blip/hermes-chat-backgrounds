@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Colour from the tab</title>
+<style>
+  :root{--bg:#12141a;--panel:#171a21;--stroke:#242a35;--ink:#e6e9ef;--dim:#9aa3b2;--faint:#5f6878;--accent:#f2c14e}
+  *{box-sizing:border-box}
+  body{margin:0;background:#0a0c10;font:13px/1.45 "Segoe UI",system-ui,sans-serif;color:var(--ink);
+       height:100vh;display:flex;align-items:center;justify-content:center}
+  .win{width:1020px;height:600px;background:var(--bg);border:1px solid var(--stroke);border-radius:12px;overflow:hidden;position:relative;
+       box-shadow:0 30px 80px rgba(0,0,0,.55)}
+  .tabs{display:flex;align-items:center;gap:6px;padding:9px 12px;background:var(--panel);border-bottom:1px solid var(--stroke)}
+  .tab{display:flex;align-items:center;gap:7px;padding:6px 11px;border-radius:6px;font-size:12.5px;color:var(--dim)}
+  .tab.on{background:#242a35;color:var(--ink);outline:1px solid #334054}
+  .tab .dot{width:7px;height:7px;border-radius:50%}
+  .body{padding:18px;position:relative;height:calc(100% - 47px)}
+  .chat{position:absolute;inset:0 0 0 0;background:color-mix(in srgb,#5fd39a 11%,var(--bg))}
+  .chat::after{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:#5fd39a}
+  .chat .in{position:absolute;left:18px;top:16px;right:18px}
+  .msg{max-width:62%;margin:0 0 9px;padding:8px 10px;border-radius:8px;background:#1c2029;border:1px solid var(--stroke);font-size:12.5px}
+  .menu{position:absolute;left:250px;top:56px;width:250px;background:#1a1e26;border:1px solid #2c3340;border-radius:10px;
+        padding:6px;box-shadow:0 24px 60px rgba(0,0,0,.6);z-index:2}
+  .mi{display:flex;align-items:center;gap:9px;padding:6px 9px;border-radius:6px;font-size:12.5px;color:#d9dee7}
+  .mi.dim{color:#616a79}
+  .mi.hot{background:#242b36}
+  .mi .g{width:14px;text-align:center;color:#8d97a6;font-size:12px}
+  .mi .chev{margin-left:auto;color:#6b7484}
+  .sep{height:1px;background:#2a303c;margin:5px 4px}
+  .pop{position:absolute;left:508px;top:196px;width:250px;background:#1a1e26;border:1px solid #2c3340;border-radius:10px;
+       padding:12px;box-shadow:0 24px 60px rgba(0,0,0,.6);z-index:3}
+  .grid{display:grid;grid-template-columns:repeat(6,1fr);gap:9px}
+  .sw{width:24px;height:24px;border-radius:50%}
+  .clear{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:11px;padding:5px 0;border-radius:6px;
+         font-size:11.5px;color:#8d97a6;border:1px solid #262c38}
+  .cap{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);font-size:11px;color:#6f7889}
+</style>
+</head>
+<body>
+  <div class="win">
+    <div class="tabs">
+      <div class="tab"><span class="dot" style="background:#7b9dff"></span> Design review</div>
+      <div class="tab on"><span class="dot" style="background:#5fd39a"></span> Release notes</div>
+      <div class="tab"><span class="dot" style="background:#f2c14e"></span> Support queue</div>
+    </div>
+    <div class="body">
+      <div class="chat">
+        <div class="in">
+          <div class="msg">A tab's own right-click menu carries the same Appearance row — one colour per chat, wherever you set it.</div>
+          <div class="msg">The field and the rail follow it immediately.</div>
+        </div>
+      </div>
+
+      <div class="menu">
+        <div class="mi"><span class="g">▢</span> New window</div>
+        <div class="mi"><span class="g">▣</span> Open in terminal</div>
+        <div class="mi"><span class="g">✎</span> Rename</div>
+        <div class="mi"><span class="g">⚑</span> Pin</div>
+        <div class="mi dim"><span class="g">✉</span> Mark as unread</div>
+        <div class="mi hot"><span class="g">◑</span> Appearance <span class="chev">›</span></div>
+        <div class="mi"><span class="g">⧉</span> Copy ID</div>
+        <div class="mi"><span class="g">⑂</span> Branch</div>
+        <div class="sep"></div>
+        <div class="mi"><span class="g">↻</span> Reload</div>
+        <div class="mi"><span class="g">✕</span> Close</div>
+        <div class="mi"><span class="g">⇥</span> Close others</div>
+      </div>
+
+      <div class="pop">
+        <div class="grid">
+          <span class="sw" style="background:hsl(0 72% 62%)"></span><span class="sw" style="background:hsl(30 72% 62%)"></span>
+          <span class="sw" style="background:hsl(60 72% 62%)"></span><span class="sw" style="background:hsl(90 72% 62%)"></span>
+          <span class="sw" style="background:hsl(120 72% 62%)"></span><span class="sw" style="background:hsl(150 72% 62%);box-shadow:0 0 0 2px #1a1e26,0 0 0 3.5px #5fd39a"></span>
+          <span class="sw" style="background:hsl(180 72% 62%)"></span><span class="sw" style="background:hsl(210 72% 62%)"></span>
+          <span class="sw" style="background:hsl(240 72% 62%)"></span><span class="sw" style="background:hsl(270 72% 62%)"></span>
+          <span class="sw" style="background:hsl(300 72% 62%)"></span><span class="sw" style="background:hsl(330 72% 62%)"></span>
+        </div>
+        <div class="clear">⊘ No colour</div>
+      </div>
+
+      <div class="cap">Mock, not a screenshot — colour from the tab's own menu</div>
+    </div>
+  </div>
+</body>
+</html>
