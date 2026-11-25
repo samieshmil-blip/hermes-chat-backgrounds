@@ -82,8 +82,10 @@ const DEFAULT_PREFS = {
 
 const TINT_ATTR = 'data-hcb-tint'
 /** Three probes are enough: full, half, quarter of the chosen strength. */
+// #region guard-consts
 const GUARD_FACTORS = [1, 0.5, 0.25]
 const MIN_CONTRAST = 4.5
+// #endregion guard-consts
 
 // ── state ───────────────────────────────────────────────────────────────────
 
@@ -167,6 +169,10 @@ function updatePrefs(patch) {
 
 // ── colour maths (the browser resolves the actual pixels for us) ─────────────
 
+// The guard's maths lives inside these markers so `tests/guard.test.mjs` can
+// exercise the shipped code without importing the plugin SDK.
+// #region colour-maths
+
 /** `rgb(12 34 56 / .5)`, `color(srgb 0.58 0.29 0.86)` and hex-ish strings →
  *  [r, g, b] in 0..255; null when it is not a colour. Chromium resolves a
  *  `color-mix()` background to `color(srgb …)` with 0..1 floats, so both the
@@ -231,6 +237,7 @@ function contrastRatio(a, b) {
 
   return (hi + 0.05) / (lo + 0.05)
 }
+// #endregion colour-maths
 
 /** Any CSS colour (hex, hsl, named) → `#rrggbb` for `<input type="color">`,
  *  computed by the browser so swatches that ship as `hsl()` convert too.
@@ -315,6 +322,7 @@ let lastPrimaryId = null
 /** Thin the fill until the theme's ink stays readable on it. The browser gives
  *  the resolved background (color-mix included), so this needs no colour
  *  parsing of the tint itself and works for white, black and everything else. */
+// #region guard-fn
 function guardContrast(el, prefs) {
   el.style.removeProperty('--hcb-strength')
 
@@ -326,6 +334,7 @@ function guardContrast(el, prefs) {
   const ink = parseRgb(getComputedStyle(el).color)
   const focused = !el.hasAttribute('data-chat-unfocused')
   let measured = null
+  let passed = false
 
   for (const factor of GUARD_FACTORS) {
     el.style.setProperty('--hcb-strength', `${(base * factor).toFixed(1)}%`)
@@ -339,14 +348,26 @@ function guardContrast(el, prefs) {
     }
 
     if (measured.ratio === null || measured.ratio >= MIN_CONTRAST) {
+      passed = true
       break
     }
+  }
+
+  // Terminal fallback: even the thinnest wash misses 4.5:1, so the field goes
+  // back to the theme instead of leaving unreadable text on a tint. The rail
+  // stays — it is a 2 px bar beside the text, not a background behind it.
+  if (!passed) {
+    el.style.removeProperty('--hcb-tint')
+    el.style.removeProperty('--hcb-strength')
+    el.removeAttribute(TINT_ATTR)
+    measured = { pct: 0, ratio: measured?.ratio ?? null, thinned: true, off: true }
   }
 
   if (focused && measured) {
     $contrast.set(measured)
   }
 }
+// #endregion guard-fn
 
 /** What is already painted on a surface, so a repaint that changes nothing
  *  costs nothing — the contrast guard forces a style read per probe, and
@@ -734,7 +755,9 @@ function SettingsSection() {
                   ratio === null
                     ? t('contrastUnknown')
                     : `${t(warn ? 'contrastWarn' : 'contrastOk', ratio.toFixed(1))}${
-                        contrast.thinned ? ` · ${t('thinned', contrast.pct)}` : ''
+                        contrast.thinned
+                          ? ` · ${contrast.off ? t('fillOff') : t('thinned', contrast.pct)}`
+                          : ''
                       }`
               })
             ]
@@ -792,6 +815,7 @@ const EXTRA_LOCALES = {
     guardDesc: 'Dünnt die Tönung automatisch aus, wenn der Textkontrast unter 4,5:1 fällt.',
     guardNote: 'Greift bei Extremfarben – Weiß, Schwarz, blasse Töne. Normale Mitteltöne bestehen die Prüfung ohnehin.',
     thinned: pct => `Füllung ${pct}%`,
+    fillOff: 'keine Füllung (Themenhintergrund)',
     hex: 'Farbe als Hex',
     note: 'Text, Rahmen und Karten bleiben in der Theme-Palette – nur das Chatfeld wird getönt.',
     openSettings: 'Chat-Hintergründe: Einstellungen',
@@ -824,6 +848,7 @@ const EXTRA_LOCALES = {
     guardDesc: 'Atenúa el relleno automáticamente cuando el contraste del texto bajaría de 4,5:1.',
     guardNote: 'Actúa en colores extremos: blanco, negro y tonos pálidos. Los tonos medios ya pasan la prueba.',
     thinned: pct => `relleno ${pct}%`,
+    fillOff: 'sin relleno (fondo del tema)',
     hex: 'Color en hex',
     note: 'El texto, los bordes y las tarjetas siguen la paleta del tema — solo se tiñe el campo del chat.',
     openSettings: 'Fondos de chat: ajustes',
@@ -856,6 +881,7 @@ const EXTRA_LOCALES = {
     guardDesc: 'Réduit automatiquement le voile dès que le contraste du texte passerait sous 4,5:1.',
     guardNote: 'Agit sur les couleurs extrêmes — blanc, noir, teintes pâles. Les tons moyens passent déjà le test.',
     thinned: pct => `voile ${pct}%`,
+    fillOff: 'sans voile (fond du thème)',
     hex: 'Couleur en hex',
     note: 'Le texte, les bordures et les cartes restent dans la palette du thème — seul le champ de la discussion est teinté.',
     openSettings: 'Fonds de discussion : réglages',
@@ -888,6 +914,7 @@ const EXTRA_LOCALES = {
     guardDesc: 'テキストのコントラストが4.5:1を下回る場合、塗りを自動的に薄くします。',
     guardNote: '白・黒・淡い色など極端な色でだけ働きます。中間色はそのまま基準を満たします。',
     thinned: pct => `塗り ${pct}%`,
+    fillOff: '塗りなし（テーマの背景）',
     hex: 'hexカラー',
     note: 'テキスト、枠線、カードはテーマのパレットのままです。着色されるのはチャットの領域だけです。',
     openSettings: 'チャット背景: 設定',
@@ -920,6 +947,7 @@ const EXTRA_LOCALES = {
     guardDesc: '当文字对比度会低于 4.5:1 时自动减淡填充。',
     guardNote: '仅在极端颜色（白、黑、浅色）时生效；普通中间色本身就能通过检查。',
     thinned: pct => `填充 ${pct}%`,
+    fillOff: '无填色（主题背景）',
     hex: '十六进制颜色',
     note: '文字、边框和卡片保持主题配色——只给聊天区域着色。',
     openSettings: '聊天背景：设置',
@@ -952,6 +980,7 @@ const EXTRA_LOCALES = {
     guardDesc: '當文字對比度會低於 4.5:1 時自動減淡填色。',
     guardNote: '僅在極端顏色（白、黑、淺色）時生效；一般中間色本身就能通過檢查。',
     thinned: pct => `填色 ${pct}%`,
+    fillOff: '無填色（主題背景）',
     hex: '十六進位顏色',
     note: '文字、邊框與卡片維持主題配色——只為聊天區域著色。',
     openSettings: '聊天背景：設定',
@@ -984,6 +1013,7 @@ const EXTRA_LOCALES = {
     guardDesc: 'يخفف التعبئة تلقائيًا عندما تنخفض نسبة تباين النص عن 4.5:1.',
     guardNote: 'يعمل على الألوان المتطرفة — الأبيض والأسود والدرجات الباهتة. أما الدرجات المتوسطة فتنجح تلقائيًا.',
     thinned: pct => `التعبئة ${pct}%`,
+    fillOff: 'بلا تعبئة (خلفية السمة)',
     hex: 'اللون بصيغة hex',
     note: 'يبقى النص والحدود والبطاقات بألوان السمة — يُلوّن حقل المحادثة فقط.',
     openSettings: 'خلفيات المحادثة: الإعدادات',
@@ -1027,6 +1057,7 @@ export default {
         guardNote:
           'Acts on extreme colours — white, black, pale tints. Ordinary mid tones already pass, so nothing changes for them.',
         thinned: pct => `fill ${pct}%`,
+        fillOff: 'no fill (theme background)',
         hex: 'Hex colour',
         note: 'Text, borders and cards stay on the theme palette — only the chat field is tinted.',
         openSettings: 'Chat backgrounds: settings',
@@ -1060,6 +1091,7 @@ export default {
         guardNote:
           'Срабатывает на крайних цветах — белый, чёрный, бледные тона. Обычные средние тона проходят проверку сами.',
         thinned: pct => `заливка ${pct}%`,
+        fillOff: 'без заливки (фон темы)',
         hex: 'Цвет в hex',
         note: 'Текст, границы и карточки остаются в палитре темы — тонируется только поле чата.',
         openSettings: 'Фон чатов: настройки',

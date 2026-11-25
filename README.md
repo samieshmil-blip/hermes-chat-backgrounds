@@ -26,8 +26,11 @@ guard keeps the text readable at any colour — white and black included.
   and cancel the follow-up click, so the plugin defers the read to the next task instead of
   trusting an event phase: a pick repaints immediately, whichever menu wrote it.
 - **Readable by construction.** For every painted surface the plugin measures the real
-  contrast (resolved background against the theme ink) and thins the fill until the text
-  passes WCAG AA (4.5:1). The measured number is shown under the picker.
+  contrast (resolved background against the theme ink) and thins the fill — full, half,
+  then a quarter of the chosen strength — until the text passes WCAG AA (4.5:1). If even
+  the thinnest wash misses, the fill is removed and the chat keeps the theme background,
+  so a colour can never make the text unreadable. The measured number is shown under the
+  picker, with the applied share or `no fill` when it had to step back.
 - **Auto colour.** A chat with no colour of its own gets a stable hue derived from its
   id, so the feature works out of the box. Turn it off to tint only the chats you colour
   by hand.
@@ -142,11 +145,17 @@ map only when its raw value changed.
 ```bash
 hermes plugins validate .   # catalog admission checks, incl. the desktop surface lint
 hermes plugins doctor .     # runtime discovery, import and registration
+node --test tests/          # contrast-guard regression tests (no deps, no build)
 ```
 
 `desktop/plugin.js` is plain ESM — no build step. The docs images are generated from
 `docs/src/*.html` (open in a browser, capture at 2× ) and are mocks: no real session
 names, models or balances appear in them.
+
+The tests load the shipped source itself: the guard's maths, constants and function sit
+between `// #region …` / `// #endregion …` markers in `desktop/plugin.js`, and
+`tests/guard.test.mjs` slices those blocks out and runs them against a fake surface — so
+the test always exercises the code that ships, without importing the plugin SDK.
 
 ## License
 
